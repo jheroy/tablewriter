@@ -10,6 +10,7 @@ package tablewriter
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"io"
 	"regexp"
 	"strings"
@@ -91,8 +92,15 @@ func (t Table) Render() {
 	if t.border {
 		t.printLine(true)
 	}
+	color.Set(color.BgBlue)
+	color.Set(color.Bold)
+	color.Set(color.CrossedOut)
 	t.printHeading()
+	color.Unset()
+	color.Set(color.BgCyan)
+	color.Set(color.FgBlack)
 	t.printRows()
+	color.Unset()
 
 	if !t.rowLine && t.border {
 		t.printLine(true)
@@ -245,7 +253,9 @@ func (t Table) printHeading() {
 	}
 	// Next line
 	fmt.Fprintln(t.out)
-	t.printLine(true)
+	if t.border {
+		t.printLine(true)
+	}
 }
 
 // Print heading information
