@@ -10,7 +10,7 @@ package tablewriter
 import (
 	"math"
 	"strings"
-	"unicode/utf8"
+	// "unicode/utf8"
 )
 
 var (
@@ -38,6 +38,17 @@ func WrapString(s string, lim int) ([]string, int) {
 	return lines, lim
 }
 
+func runeWidth(s string) (n int) {
+	for _, r := range s {
+		n++
+		if int(r) > 0x7c0 {
+			n++
+		}
+	}
+
+	return
+}
+
 // WrapWords is the low-level line-breaking algorithm, useful if you need more
 // control over the details of the text wrapping process. For most uses,
 // WrapString will be sufficient and more convenient.
@@ -55,9 +66,9 @@ func WrapWords(words []string, spc, lim, pen int) [][]string {
 	length := make([][]int, n)
 	for i := 0; i < n; i++ {
 		length[i] = make([]int, n)
-		length[i][i] = utf8.RuneCountInString(words[i])
+		length[i][i] = runeWidth(words[i])
 		for j := i + 1; j < n; j++ {
-			length[i][j] = length[i][j-1] + spc + utf8.RuneCountInString(words[j])
+			length[i][j] = length[i][j-1] + spc + runeWidth(words[j])
 		}
 	}
 	nbrk := make([]int, n)

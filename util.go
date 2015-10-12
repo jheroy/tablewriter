@@ -11,7 +11,7 @@ import (
 	"math"
 	"regexp"
 	"strings"
-	"unicode/utf8"
+	// "unicode/utf8"
 )
 
 var (
@@ -19,7 +19,7 @@ var (
 )
 
 func DisplayWidth(str string) int {
-	return utf8.RuneCountInString(ansi.ReplaceAllLiteralString(str, ""))
+	return runeWidth(ansi.ReplaceAllLiteralString(str, ""))
 }
 
 // Simple Condition for string
